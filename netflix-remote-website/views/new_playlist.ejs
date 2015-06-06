@@ -1,0 +1,17 @@
+<html>
+  <head>
+    <title>Create a new playlist</title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+      <input type="text" name="name"><br>
+      <div id="checker">
+      <% movies.forEach( function (entry){ %>
+        <input type="checkbox" class= "nodes" value= <%=entry.nodeid %> > <%= entry.name %><br>
+      <% }); %>
+    </div>
+      <button type ="button" onclick="new_playlist()">Submit</button>
+        <script type="text/javascript" src="/javascripts/ajax.js"></script>
+        <script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
+  </body>
+</html>

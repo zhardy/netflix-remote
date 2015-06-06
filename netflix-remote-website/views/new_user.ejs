@@ -1,0 +1,21 @@
+<html>
+<head>
+	<title>Netflix Remote | New User</title>
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+</head>
+<body>
+
+	<h1> New User </h1>
+	<p><%= message %></p>
+
+    <form action="/user/new" method="post">
+    	Username :		  <input type="text" name="username"><br>
+    	Password : 		  <input type="password" name="password"><br>
+    	Retype Password : <input type="password" name="repassword"><br>
+    	<button type="submit">Submit</button>
+    </form>
+
+    <a href="/login">Login if you already have an account</a>
+
+</body>
+</html>
