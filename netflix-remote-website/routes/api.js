@@ -6,16 +6,17 @@ var db = require('../lib/index.js');
 router.post('/login', function(req, res, next) {
 	username = req.body.username;
 	password = req.body.password;
-	check = db.check(username, password);
-	check.then(
-		function (user){
-			console.log('good');
-			res.send('Good!');
-		},
-		function (error){
-			console.log('problem');
-			res.send('problem');
-		});
+	res.json({status:'Good!'});
+	// check = db.check(username, password);
+	// check.then(
+	// 	function (user){
+	// 		console.log('good');
+	// 		res.json({status:'Good!'});
+	// 	},
+	// 	function (error){
+	// 		console.log('problem');
+	// 		res.send('problem');
+	// 	});
 });
 
 module.exports = router;
