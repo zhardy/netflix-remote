@@ -13,18 +13,7 @@ function login(){
 		    data : { username: user, password: pass },
 		    dataType : 'json'
 			}).done( function (data){
-				console.log(data)
-
-				// $( ".message" ).append( data );
-
-				// if(data.status === 'success'){
-				// 	$('div#message').append('Success!');
-				// }
-				// else if(data.status === 'error'){
-
-				// } else {
-				// 	$('div#message').append(data.failureType);
-				// }
+				 $( ".message" ).append( 'i\'m the best' );
 			});
 
 }
