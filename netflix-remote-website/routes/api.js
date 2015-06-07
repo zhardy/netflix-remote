@@ -4,10 +4,10 @@ var db = require('../lib/index.js');
 
 /* Post to Login */
 router.post('/login', function(req, res, next) {
-
+	console.log(req.toString());
 	username = req.body.username;
 	password = req.body.password;
-	console.log(username + "zack");
+
 	check = db.check(username, password);
 	check.then(
 		function (user){

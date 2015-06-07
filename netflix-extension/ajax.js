@@ -5,25 +5,26 @@ function login(){
 
   	var user = $("input[name='username'").val();
   	var pass = $("input[name='password'").val();
-  	$( ".message" ).append( user );
+
 
   		$.ajax({
 		    type : 'POST',
-		    url  : 'api/login',
+		    url  : 'http://localhost:3000/api/login',
 		    data : { username: user, password: pass },
 		    dataType : 'json'
 			}).done( function (data){
+				console.log(data)
 
-				$( ".message" ).append( data );
+				// $( ".message" ).append( data );
 
-				if(data.status === 'success'){
-					$('div#message').append('Success!');
-				}
-				else if(data.status === 'error'){
+				// if(data.status === 'success'){
+				// 	$('div#message').append('Success!');
+				// }
+				// else if(data.status === 'error'){
 
-				} else {
-					$('div#message').append(data.failureType);
-				}
+				// } else {
+				// 	$('div#message').append(data.failureType);
+				// }
 			});
 
 }
