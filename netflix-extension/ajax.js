@@ -2,7 +2,6 @@
 
 
 document.addEventListener('DOMContentLoaded', function(){
-	$( ".message" ).append( 'it' );
 	console.log('eggs');
 	var loginButton = document.querySelectorAll('button')[0];
 	loginButton.addEventListener('click', login);
@@ -19,7 +18,7 @@ function login(){
 	    data : { username: user, password: pass },
 	    dataType : 'json'
 		}).done( function (data){
-			console.log('something');
+			$( ".message" ).append( data.status );
 
 		});
 
