@@ -31,6 +31,7 @@ var db = {
 								resolve(result.rows[0].uid);
 							}
 							else{
+								console.log('got here');
 								reject(undefined);
 							}
 						}

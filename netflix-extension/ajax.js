@@ -18,7 +18,9 @@ function login(){
 	    data : { username: user, password: pass },
 	    dataType : 'json'
 		}).done( function (data){
+			console.log(data);
 			$( ".message" ).append( data.status );
+
 
 		});
 

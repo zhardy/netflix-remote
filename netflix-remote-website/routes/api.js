@@ -13,8 +13,7 @@ router.post('/login', function(req, res, next) {
 			res.json({status:'Good!'});
 		},
 		function (error){
-			console.log('something');
-			res.json({status: 'error'});
+			res.json({status: error.toString()});
 		});
 });
 
