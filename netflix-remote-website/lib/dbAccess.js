@@ -10,7 +10,6 @@ var conString = "postgres://zhardy:password@localhost/netremote";
 
 var databaseConnectionError = "Error connecting with database";
 var databaseInteractionError = "Error interacting with database";
-var test = 'eggs';
 
 var testing = ['http://www.netflix.com/WiPlayer?movieid=60033311', 'http://www.netflix.com/WiPlayer?movieid=261909&trkid=13466331', 'http://www.netflix.com/WiPlayer?movieid=563104', 'http://www.netflix.com/WiPlayer?movieid=555221']
 //50 first dates, Annie Hall, Groundhog Day, the Graduate
@@ -21,7 +20,6 @@ var testing = ['http://www.netflix.com/WiPlayer?movieid=60033311', 'http://www.n
 var db = {
 
 	checkExists: function(username){
-
 		var checkExistsError = " while checking if the username exists";
 		var promise = new Promise( function (resolve ,reject){
 			pg.connect(conString, function (connErr, client, done){
@@ -29,9 +27,8 @@ var db = {
 					reject(datbaseConnectionError + checkExistsError);
 				}
 				else{
-
-					var sq = squel.select().from('users').field('uID').where('username=$1').toString();
-					client.query(sq, [username], function (dbErr, result){
+					var sq = squel.select().from('users').field('uID').where('username=?', username).toString();
+					client.query(sq, function (dbErr, result){
 						if(dbErr){
 							console.log(dbErr);
 							reject(databaseInteractionError + checkExistsError);
@@ -60,6 +57,7 @@ var db = {
 					reject(databaseConnectionError + addUserError);
 				}
 				else{
+					var sq = squel.insert().into('users').set('username', username).returning('uid').toParam();
 					client.query("INSERT INTO users VALUES ($1) RETURNING uid", [username], function (dbErr, result){
 						if(dbErr){
 							reject(databaseInteractionError + addUserError);
