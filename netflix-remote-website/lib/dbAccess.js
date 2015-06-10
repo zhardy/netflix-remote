@@ -11,7 +11,7 @@ var conString = "postgres://zhardy:password@localhost/netremote";
 var databaseConnectionError = "Error connecting with database";
 var databaseInteractionError = "Error interacting with database";
 
-var testing = ['http://www.netflix.com/WiPlayer?movieid=60033311', 'http://www.netflix.com/WiPlayer?movieid=261909&trkid=13466331', 'http://www.netflix.com/WiPlayer?movieid=563104', 'http://www.netflix.com/WiPlayer?movieid=555221']
+
 //50 first dates, Annie Hall, Groundhog Day, the Graduate
 
 
@@ -27,7 +27,10 @@ var db = {
 					reject(datbaseConnectionError + checkExistsError);
 				}
 				else{
-					var sq = squel.select().from('users').field('uID').where('username=?', username).toString();
+					var sq = squel.select()
+									.from('users')
+									.field('uID')
+									.where('username=?', username).toString();
 					client.query(sq, function (dbErr, result){
 						if(dbErr){
 							console.log(dbErr);
@@ -57,8 +60,12 @@ var db = {
 					reject(databaseConnectionError + addUserError);
 				}
 				else{
-					var sq = squel.insert().into('users').set('username', username).returning('uid').toParam();
-					client.query("INSERT INTO users VALUES ($1) RETURNING uid", [username], function (dbErr, result){
+					var sq = squel.insert()
+									.into('users')
+									.set('username', username)
+									.returning('uid').toString();
+					console.log(sq);
+					client.query(sq, function (dbErr, result){
 						if(dbErr){
 							reject(databaseInteractionError + addUserError);
 						}
@@ -82,7 +89,11 @@ var db = {
 					reject(datbaseConnectionError + addPasswordError);
 				}
 				else{
-					client.query("INSERT INTO passwords (uid, password) VALUES ($1, $2)", [uid, password], function (dbErr, result){
+					var sq = squel.insert()
+									.into('passwords')
+									.set('uid', uid)
+									.set('password', password).toString();
+					client.query(sq, function (dbErr, result){
 						if(dbErr){
 							reject(databaseInteractionError + addPasswordError);
 						}
@@ -97,6 +108,36 @@ var db = {
 		return promise;
 	},
 
+	checkPassword: function (uID, password){
+		var checkPasswordError = " while checking password";
+		var promise = new Promise(function (resolve, reject){
+			pg.connect(conString, function (connErr, client, done){
+				if(connErr){
+					reject(datbaseConnectionError + checkPasswordError);
+				}
+				else{
+					var sq = squel.select()
+									.from('passwords')
+									.field('password')
+									.where('uID=?', uID).toString();
+					client.query(sq, function (dbErr, result){
+						if(dbErr){
+							reject(databaseInteractionError + checkPasswordError);
+						}
+						else{
+							done();
+							if(result.rows.length > 0){
+								result.rows[0].password === password ? resolve(true) : resolve(false);
+								}
+							}
+						});
+					}
+				});
+			});
+		return promise;
+	},
+
+
 	getMovies: function (){
 		var movieError = " while getting movies";
 		var promise = new Promise( function (resolve, reject){
@@ -105,7 +146,9 @@ var db = {
 					reject(datbaseConnectionError + movieError);
 				}
 				else{
-					client.query("SELECT * FROM movies", function (dbErr, result){
+					var sq = squel.select()// .field('*')
+									.from('movies').toString();
+					client.query(sq, function (dbErr, result){
 						if(dbErr){
 							reject(databaseInteractionError + movieError);
 						}
@@ -128,7 +171,11 @@ var db = {
 					reject(datbaseConnectionError + makePlaylistError);
 				}
 				else{
-					client.query("INSERT INTO playlists VALUES ($1) RETURNING playID", [title], function (dbErr, result){
+					var sq = squel.insert()
+									.into('playlists')
+									.set('name', title)
+									.returning('playID').toString();
+					client.query(sq, function (dbErr, result){
 						if(dbErr){
 							reject(databaseInteractionError + makePlaylistError);
 						}
@@ -150,7 +197,13 @@ var db = {
 				callback(datbaseConnectionError + connectingNodesError);
 			}
 			else{
-				client.query("INSERT INTO playlistsnode VALUES ($1, $2, $3)", [order, playID, nodeID], function (dbErr, result){
+				var sq = squel.insert()
+								.into('playlistsnode')
+								.set('position', order)
+								.set('playID', playID)
+								.set('nodeID', nodeID).toString();
+				console.log(sq);
+				client.query(sq, function (dbErr, result){
 					if(dbErr){
 						callback(databaseInteractionError + connectingNodesError);
 						}
@@ -171,7 +224,11 @@ var db = {
 					reject(datbaseConnectionError + connectUserPlaylistError);
 				}
 				else{
-					client.query("INSERT INTO userplaylists VALUES ($1, $2)", [userID, playID], function (dbErr, result){
+					var sq = squel.insert()
+									.into('userplaylists')
+									.set('uID', userID)
+									.set('playID', playID).toString();
+					client.query(sq, function (dbErr, result){
 						if(dbErr){
 							reject(databaseInteractionError + connectUserPlaylistError);
 						}
@@ -186,32 +243,6 @@ var db = {
 		return promise;
 	},
 
-
-	checkPassword: function (uID, password){
-		var checkPasswordError = " while checking password";
-		var promise = new Promise(function (resolve, reject){
-			pg.connect(conString, function (connErr, client, done){
-				if(connErr){
-					reject(datbaseConnectionError + checkPasswordError);
-				}
-				else{
-					client.query("SELECT password FROM passwords WHERE uID=($1)", [uID], function (dbErr, result){
-						if(dbErr){
-							reject(databaseInteractionError + checkPasswordError);
-						}
-						else{
-							done();
-							if(result.rows.length > 0){
-								result.rows[0].password === password ? resolve(true) : resolve(false);
-								}
-							}
-						});
-					}
-				});
-			});
-		return promise;
-	},
-
 	getPlaylists: function(uID){
 		var getPlaylistsError = " while getting the users playlists";
 		var promise = new Promise(function (resolve, reject){
@@ -220,7 +251,16 @@ var db = {
 					reject(datbaseConnectionError + getPlaylistsError)
 				}
 				else{
-					client.query("SELECT P.name FROM playlists P, userplaylists Z, users U WHERE U.uid = Z.uid AND P.playid = Z.playid AND U.uid =($1)", [uID], function (dbErr, result){
+					var sq = squel.select()
+									.from('playlists', 'P')
+									.from('userplaylists', 'Z')
+									.from('users', 'U')
+									.field('P.name')
+									.field('P.playID')
+									.where('U.uid = Z.uid')
+									.where('P.playID = Z.playID')
+									.where('U.uid=?', uid).toString();
+					client.query(sq, function (dbErr, result){
 						if(dbErr){
 							reject(databaseInteractionError + getPlaylistsError);
 						}
