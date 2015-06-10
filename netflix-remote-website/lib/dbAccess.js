@@ -4,7 +4,8 @@ var Promise = require('promise');
 
 //psql -h localhost -d netremote --u zhardy
 
-
+var databaseConnectionError = "Error connecting with database";
+var databaseInteractionError = "Error interacting with database";
 var test = 'eggs';
 
 var testing = ['http://www.netflix.com/WiPlayer?movieid=60033311', 'http://www.netflix.com/WiPlayer?movieid=261909&trkid=13466331', 'http://www.netflix.com/WiPlayer?movieid=563104', 'http://www.netflix.com/WiPlayer?movieid=555221']
@@ -16,22 +17,22 @@ var testing = ['http://www.netflix.com/WiPlayer?movieid=60033311', 'http://www.n
 var db = {
 
 	checkExists: function(username){
+		var checkExistsError = " while checking if the username exists";
 		var promise = new Promise( function (resolve ,reject){
 			pg.connect(conString, function (connErr, client, done){
 				if(connErr){
-					reject("Error connecting to database while checking if the username exists");
+					reject(datbaseConnectionError + checkExistsError);
 				}
 				else{
 					client.query("SELECT uID FROM users WHERE username=($1)", [username], function (dbErr, result){
 						if(dbErr){
-							reject("Error interacting with the databases while checking if the username exists");
+							reject(databaseInteractionError + checkExistsError);
 						}
 						else{
 							if(result.rows.length > 0){
 								resolve(result.rows[0].uid);
 							}
 							else{
-								console.log('got here');
 								reject(undefined);
 							}
 						}
@@ -44,15 +45,16 @@ var db = {
 
 
 	addUser: function (username){
+		var addUserError = " while adding a new user";
 		var promise = new Promise( function (resolve, reject){
 			pg.connect(conString, function (connErr, client, done) {
 				if(connErr){
-					reject("Error connecting to the database while adding a new user");
+					reject(databaseConnectionError + addUserError);
 				}
 				else{
 					client.query("INSERT INTO users VALUES ($1) RETURNING uid", [username], function (dbErr, result){
 						if(dbErr){
-							reject("Error interacting with the database while adding a new user");
+							reject(databaseInteractionError + addUserError);
 						}
 						else{
 							done();
@@ -67,15 +69,16 @@ var db = {
 	},
 
 	addPassword: function (password, uid){
+		var addPasswordError = " while adding a password";
 		var promise = new Promise( function (resolve, reject){
 			pg.connect(conString, function (connErr, client, done){
 				if(connErr){
-					reject("Error connecting to database while adding a password");
+					reject(datbaseConnectionError + addPasswordError);
 				}
 				else{
 					client.query("INSERT INTO passwords (uid, password) VALUES ($1, $2)", [uid, password], function (dbErr, result){
 						if(dbErr){
-							reject("Error interacting with database while adding a password");
+							reject(databaseInteractionError + addPasswordError);
 						}
 						else{
 							done();
@@ -89,15 +92,16 @@ var db = {
 	},
 
 	getMovies: function (){
+		var movieError = " while getting movies";
 		var promise = new Promise( function (resolve, reject){
 			pg.connect(conString, function (connErr, client, done){
 				if(connErr){
-					reject("Error connecting with database");
+					reject(datbaseConnectionError + movieError);
 				}
 				else{
 					client.query("SELECT * FROM movies", function (dbErr, result){
 						if(dbErr){
-							reject("Error interacting with database");
+							reject(databaseInteractionError + movieError);
 						}
 						else{
 							done();
@@ -111,15 +115,16 @@ var db = {
 	},
 
 	makePlaylist: function (title){
+		var makePlaylistError = " while making a playlist";
 		var promise = new Promise( function (resolve, reject){
 			pg.connect(conString, function (connErr, client, done){
 				if(connErr){
-					reject("Error connecting with database");
+					reject(datbaseConnectionError + makePlaylistError);
 				}
 				else{
 					client.query("INSERT INTO playlists VALUES ($1) RETURNING playID", [title], function (dbErr, result){
 						if(dbErr){
-							reject("Error interacting with database");
+							reject(databaseInteractionError + makePlaylistError);
 						}
 						else{
 							done();
@@ -133,14 +138,15 @@ var db = {
 	},
 
 	connectPlaylistNodes: function (order, nodeID, playID, callback){
+		var connectingNodesError = " while connecting the playlist nodes";
 		pg.connect(conString, function (connErr, client, done){
 			if(connErr){
-				callback("Error connecting with database");
+				callback(datbaseConnectionError + connectingNodesError);
 			}
 			else{
 				client.query("INSERT INTO playlistsnode VALUES ($1, $2, $3)", [order, playID, nodeID], function (dbErr, result){
 					if(dbErr){
-						callback(dbErr);
+						callback(databaseInteractionError + connectingNodesError);
 						}
 					else{
 						done();
@@ -152,15 +158,16 @@ var db = {
 	},
 
 	connectUserPlaylist: function (userID, playID){
+		var connectUserPlaylistError = " while connecting the user to the playlist";
 		var promise = new Promise(function (resolve, reject){
 			pg.connect(conString, function (connErr, client, done){
 				if(connErr){
-					reject("Error connecting with database");
+					reject(datbaseConnectionError + connectUserPlaylistError);
 				}
 				else{
 					client.query("INSERT INTO userplaylists VALUES ($1, $2)", [userID, playID], function (dbErr, result){
 						if(dbErr){
-							reject("Error interacting with database");
+							reject(databaseInteractionError + connectUserPlaylistError);
 						}
 						else{
 							done();
@@ -175,25 +182,21 @@ var db = {
 
 
 	checkPassword: function (uID, password){
+		var checkPasswordError = " while checking password";
 		var promise = new Promise(function (resolve, reject){
 			pg.connect(conString, function (connErr, client, done){
 				if(connErr){
-					reject("Error connecting with database");
+					reject(datbaseConnectionError + checkPasswordError);
 				}
 				else{
 					client.query("SELECT password FROM passwords WHERE uID=($1)", [uID], function (dbErr, result){
 						if(dbErr){
-							reject("Error interacting with database");
+							reject(databaseInteractionError + checkPasswordError);
 						}
 						else{
 							done();
 							if(result.rows.length > 0){
-								if(result.rows[0].password === password){
-									resolve(true);
-								}
-								else{
-									resolve(false);
-									}
+								result.rows[0].password === password ? resolve(true) : resolve(false);
 								}
 							}
 						});
@@ -201,7 +204,19 @@ var db = {
 				});
 			});
 		return promise;
-	}	
+	}
+
+	getPlaylists : function(uID){
+		var getPlaylistsError = " while getting the users playlists";
+		var promise = new Promise(function (resolve, reject){
+			pg.connect(conString, function (connErr, client, done){
+				if(connErr){
+					reject(datbaseConnectionError)
+				}
+			})
+			});
+		return promise;
+	}
 
 }
 
