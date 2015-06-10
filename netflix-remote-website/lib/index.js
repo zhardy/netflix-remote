@@ -65,7 +65,6 @@ function check(username, password){
 	var promise = new Promise( function (resolve, reject){
 		db.checkExists(username).then(
 			function (uID){
-
 				db.checkPassword(uID, password).then(
 					function (validated){
 						

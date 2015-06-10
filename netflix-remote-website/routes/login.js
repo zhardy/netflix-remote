@@ -10,7 +10,6 @@ router.get('/', function(req, res, next) {
 		res.redirect('/');
 	}
   	else{	
-
   		res.render('login', {message : authmessage});
   	}
 });
@@ -20,11 +19,11 @@ router.post('/', function(req, res, next){
 	var password = req.body.password;
 	db.check(username, password).then(
 		function (user){
-			console.log('something');
 			req.session.user = user;
 			res.redirect('/');
 		},
 		function (err){
+			console.log(err);
 			req.flash('auth', err); 
 			res.redirect('/');
 		});

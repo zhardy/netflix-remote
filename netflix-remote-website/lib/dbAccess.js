@@ -1,6 +1,10 @@
 var pg = require('pg');
-var conString = "postgres://zhardy:password@localhost/netremote";
+var squel = require("squel");
+squel = squel.useFlavour('postgres');
 var Promise = require('promise');
+
+var conString = "postgres://zhardy:password@localhost/netremote";
+
 
 //psql -h localhost -d netremote --u zhardy
 
@@ -17,6 +21,7 @@ var testing = ['http://www.netflix.com/WiPlayer?movieid=60033311', 'http://www.n
 var db = {
 
 	checkExists: function(username){
+
 		var checkExistsError = " while checking if the username exists";
 		var promise = new Promise( function (resolve ,reject){
 			pg.connect(conString, function (connErr, client, done){
@@ -24,8 +29,11 @@ var db = {
 					reject(datbaseConnectionError + checkExistsError);
 				}
 				else{
-					client.query("SELECT uID FROM users WHERE username=($1)", [username], function (dbErr, result){
+
+					var sq = squel.select().from('users').field('uID').where('username=$1').toString();
+					client.query(sq, [username], function (dbErr, result){
 						if(dbErr){
+							console.log(dbErr);
 							reject(databaseInteractionError + checkExistsError);
 						}
 						else{
@@ -204,9 +212,9 @@ var db = {
 				});
 			});
 		return promise;
-	}
+	},
 
-	getPlaylists : function(uID){
+	getPlaylists: function(uID){
 		var getPlaylistsError = " while getting the users playlists";
 		var promise = new Promise(function (resolve, reject){
 			pg.connect(conString, function (connErr, client, done){
