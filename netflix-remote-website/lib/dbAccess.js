@@ -33,7 +33,6 @@ var db = {
 									.where('username=?', username).toString();
 					client.query(sq, function (dbErr, result){
 						if(dbErr){
-							console.log(dbErr);
 							reject(databaseInteractionError + checkExistsError);
 						}
 						else{
@@ -64,7 +63,6 @@ var db = {
 									.into('users')
 									.set('username', username)
 									.returning('uid').toString();
-					console.log(sq);
 					client.query(sq, function (dbErr, result){
 						if(dbErr){
 							reject(databaseInteractionError + addUserError);
@@ -179,7 +177,6 @@ var db = {
 									.set('nodeID', nodeID).toString();
 					client.query(sq, function (dbErr, result){
 						if(dbErr){
-							console.log(dbErr);
 							reject(databaseInteractionError + movieError);
 						}
 						else{
@@ -259,7 +256,6 @@ var db = {
 								.set('position', order)
 								.set('playID', playID)
 								.set('nodeID', nodeID).toString();
-				console.log(sq);
 				client.query(sq, function (dbErr, result){
 					if(dbErr){
 						callback(databaseInteractionError + connectingNodesError);
