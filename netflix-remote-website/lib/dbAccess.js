@@ -211,8 +211,20 @@ var db = {
 		var promise = new Promise(function (resolve, reject){
 			pg.connect(conString, function (connErr, client, done){
 				if(connErr){
-					reject(datbaseConnectionError)
+					reject(datbaseConnectionError + getPlaylistsError)
 				}
+				else{
+					client.query("SELECT P.name FROM playlists P, userplaylists Z, users U WHERE U.uid = Z.uid AND P.playid = Z.playid AND U.uid =($1)", [uID], function (dbErr, result){
+						if(dbErr){
+							reject(databaseInteractionError + getPlaylistsError);
+						}
+						else{
+							done();
+							resolve(result.rows);
+						}
+					});
+				}
+
 			})
 			});
 		return promise;
