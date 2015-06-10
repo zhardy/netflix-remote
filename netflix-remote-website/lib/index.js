@@ -33,7 +33,6 @@ function new_playlist(userID, title, nodeIDs){
 	return promise;
 }
 
-
 function new_user(username, password){
 	var promise = new Promise(function (resolve, reject){
 		var check = db.checkExists(username);
@@ -61,8 +60,6 @@ function new_user(username, password){
 	});
 	return promise;
 }
-
-
 
 function check(username, password){
 	var promise = new Promise( function (resolve, reject){
@@ -96,6 +93,19 @@ function check(username, password){
 function movies(){
 	var promise = new Promise ( function (resolve, reject){
 		db.getMovies().then(
+			function (result){
+				resolve(result);
+			},
+			function (error){
+				reject(error);
+			});
+		});
+	return promise;
+}
+
+function playlists(userID){
+	var promise = new Promise ( function (resolve, reject){
+		db.getPlaylists(userID).then(
 			function (result){
 				resolve(result);
 			},
