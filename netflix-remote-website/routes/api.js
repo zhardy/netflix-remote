@@ -10,11 +10,13 @@ router.post('/login', function(req, res, next) {
 	check = db.check(username, password);
 	check.then(
 		function (user){
-			res.json({status:'Good!'});
+			res.json({status: undefined});
 		},
 		function (error){
 			res.json({status: error.toString()});
 		});
 });
+
+
 
 module.exports = router;

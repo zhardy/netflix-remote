@@ -8,13 +8,6 @@
     "tabs" ,
     "http://localhost:3000/*"
   ],
-  // "content_scripts": [
-  //   {
-  //     "matches": ["*://*/*"],
-  //     "js": ["jquery-2.1.4.min.js","ajax.js"],
-  //     "run_at": "document_end"
-  //   }
-  // ],
   "browser_action": {
     "default_icon": "icon.png",
     "default_popup": "popup.html"

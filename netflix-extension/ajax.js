@@ -2,7 +2,6 @@
 
 
 document.addEventListener('DOMContentLoaded', function(){
-	console.log('eggs');
 	var loginButton = document.querySelectorAll('button')[0];
 	loginButton.addEventListener('click', login);
 });
@@ -18,11 +17,20 @@ function login(){
 	    data : { username: user, password: pass },
 	    dataType : 'json'
 		}).done( function (data){
-			console.log(data);
-			$( ".message" ).append( data.status );
-
+			if(data.status != undefined){
+				$( ".message" ).append( data.status );
+			}
+			else{
+				var container = $('#container');
+				container.empty();
+				build_playlists(data.playlists, container)
+			}
 
 		});
 
+}
+
+function build_playlists(playlistArray, container){
+	
 }
 
