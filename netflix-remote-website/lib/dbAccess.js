@@ -137,6 +137,63 @@ var db = {
 		return promise;
 	},
 
+	createNode: function (type){
+		var nodeError = " while creating node";
+		var promise = new Promise( function (resolve, reject){
+			pg.connect(conString, function (connErr, client, done){
+				if(connErr){
+					reject(datbaseConnectionError + nodeError);
+				}
+				else{
+					var sq = squel.insert()
+									.into('nodes')
+									.set('type', type)
+									.returning('nodeID').toString();
+					client.query(sq, function (dbErr, result){
+						if(dbErr){
+							reject(databaseInteractionError + nodeError);
+						}
+						else{
+							done();
+							resolve(result.rows[0].nodeid);
+						}
+					});
+				}
+			});
+		});
+		return promise;
+	},
+
+	insertMovie: function (title, link, nodeID){
+		var movieError = " while inserting movie";
+		var promise = new Promise( function (resolve, reject){
+			pg.connect(conString, function (connErr, client, done){
+				if(connErr){
+					reject(databaseConnectionError + movieError);
+				}
+				else{
+					var sq = squel.insert()
+									.into('movies')
+									.set('name', title)
+									.set('movieLink', link)
+									.set('nodeID', nodeID).toString();
+					client.query(sq, function (dbErr, result){
+						if(dbErr){
+							console.log(dbErr);
+							reject(databaseInteractionError + movieError);
+						}
+						else{
+							done();
+							resolve(true);
+						}
+					});
+
+				}
+			});
+		});
+		return promise;
+	},
+
 
 	getMovies: function (){
 		var movieError = " while getting movies";

@@ -2,37 +2,6 @@ var Promise = require('promise');
 var db = require('./dbAccess.js');
 var User = require('./user.js');
 
-function new_playlist(userID, title, nodeIDs){
-	var promise = new Promise( function (resolve, reject){
-		var play = db.makePlaylist(title);
-		play.then(
-			function (playID){
-
-				var connectUser = db.connectUserPlaylist(userID, playID);
-				connectUser.then(
-					function (result){
-						for(var i=0; i<nodeIDs.length; i++){
-							var connectPlay = db.connectPlaylistNodes(i, nodeIDs[i], playID, function (err, something){
-								if(err){
-									reject(err);
-								}
-								else{
-									resolve(something);
-								}
-							});
-						}
-					},
-					function (connectingUserError){
-						reject(connectingUserError);
-					});
-			},
-			function (makingPlaylistError){
-				reject(makingPlaylistError);
-			});
-	});
-	return promise;
-}
-
 function new_user(username, password){
 	var promise = new Promise(function (resolve, reject){
 		var check = db.checkExists(username);
@@ -89,6 +58,58 @@ function check(username, password){
 	return promise;
 }
 
+function new_playlist(userID, title, nodeIDs){
+	var promise = new Promise( function (resolve, reject){
+		var play = db.makePlaylist(title);
+		play.then(
+			function (playID){
+
+				var connectUser = db.connectUserPlaylist(userID, playID);
+				connectUser.then(
+					function (result){
+						for(var i=0; i<nodeIDs.length; i++){
+							var connectPlay = db.connectPlaylistNodes(i, nodeIDs[i], playID, function (err, something){
+								if(err){
+									reject(err);
+								}
+								else{
+									resolve(something);
+								}
+							});
+						}
+					},
+					function (connectingUserError){
+						reject(connectingUserError);
+					});
+			},
+			function (makingPlaylistError){
+				reject(makingPlaylistError);
+			});
+	});
+	return promise;
+}
+
+function put_movies(array){
+	var promise = new Promise ( function (resolve, reject){
+		array.forEach( function (movie){
+			db.createNode('m').then(
+				function (result){
+					db.insertMovie(movie.title, movie.link, result).then(
+						function (nextResult){
+							resolve(nextResult);
+						},
+						function (error){
+							reject(error);
+						});
+				},
+				function (error){
+					reject(error);
+				});
+		});
+	});
+	return promise;
+}
+
 function movies(){
 	var promise = new Promise ( function (resolve, reject){
 		db.getMovies().then(
@@ -119,3 +140,5 @@ exports.new_user 	 = new_user;
 exports.new_playlist = new_playlist;
 exports.check 		 = check;
 exports.movies 		 = movies;
+exports.put_movies	 = put_movies;
+exports.playlists 	 = playlists;
