@@ -1,17 +1,20 @@
 <!DOCTYPE html>
 <html>
   <head>
-
+    <title> View your Playlists | Netflix Remote </title>
     <link rel='stylesheet' href='/stylesheets/style.css' />
   </head>
   <body>
-
+  <% if (playlists.length > 0){ %>
     <ul>
+
     	<% playlists.forEach( function (entry){ %>
     		<li><%= entry.name %></li>
     		<% }); %>
     </ul>
-
+  <% } else { %> 
+      <p>You don't have any playlists! :( Create one by clicking the link below! </p>
+  <% } %>
     <a href="/playlist/new">Create a new playlist! </a>
   </body>
 </html>

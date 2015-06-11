@@ -7,6 +7,7 @@ router.get('/', function (req, res){
 	if (user){
 		var playlists = db.playlists(user.uid);
 		playlists.then( function (data){
+			
 			res.render('playlists', {playlists : data});
 		},
 		function (reject){
