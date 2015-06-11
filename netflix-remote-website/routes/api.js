@@ -12,10 +12,10 @@ router.post('/login', function(req, res, next) {
 		function (user){
 
 			playlists = db.playlists(user.uid);
-			playlists.then( function (result){
+			playlists.then(
+				function (result){
 					res.json({playlists: result});
-				});
-			},
+				},
 			function (error){
 				console.log(error);
 			});

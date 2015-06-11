@@ -1,10 +1,21 @@
 var express = require('express');
 var router = express.Router();
 var db = require('../lib/index.js');
-var test = 'eggs';
 
 router.get('/', function (req, res){
-	console.log('doesn\'t exist');
+	user = req.session.user;
+	if (user){
+		var playlists = db.playlists(user.uid);
+		playlists.then( function (data){
+			res.render('playlists', {playlists : data});
+		},
+		function (reject){
+			res.redirect('error', {message : reject});
+		});
+	}
+	else{
+		res.redirect('/login');
+	}
 });
 
 router.get('/new', function (req, res){

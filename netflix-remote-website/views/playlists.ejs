@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+  <head>
+
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+
+    <ul>
+    	<% playlists.forEach( function (entry){ %>
+    		<li><%= entry.name %></li>
+    		<% }); %>
+    </ul>
+
+    <a href="/playlist/new">Create a new playlist! </a>
+  </body>
+</html>
