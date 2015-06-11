@@ -304,15 +304,18 @@ var db = {
 					reject(datbaseConnectionError + getPlaylistsError)
 				}
 				else{
+					var p = "P";
+					var z = "Z";
+					var u = "U";
 					var sq = squel.select()
-									.from('playlists', 'P')
-									.from('userplaylists', 'Z')
-									.from('users', 'U')
+									.from('playlists P')
+									.from('userplaylists Z')
+									.from('users U')
 									.field('P.name')
 									.field('P.playID')
 									.where('U.uid = Z.uid')
 									.where('P.playID = Z.playID')
-									.where('U.uid=?', uid).toString();
+									.where('U.uid=?', uID).toString();
 					client.query(sq, function (dbErr, result){
 						if(dbErr){
 							reject(databaseInteractionError + getPlaylistsError);

@@ -31,6 +31,11 @@ function login(){
 }
 
 function build_playlists(playlistArray, container){
-	
+	var html = "<ul>";
+	playlistArray.forEach(function (entry){
+		html = html + "<li>" + entry.name + "</li>";
+	});
+	html = html + "</ul>";
+	container.append(html);
 }
 

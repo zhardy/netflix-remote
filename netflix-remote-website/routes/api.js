@@ -10,7 +10,15 @@ router.post('/login', function(req, res, next) {
 	check = db.check(username, password);
 	check.then(
 		function (user){
-			res.json({status: undefined});
+
+			playlists = db.playlists(user.uid);
+			playlists.then( function (result){
+					res.json({playlists: result});
+				});
+			},
+			function (error){
+				console.log(error);
+			});
 		},
 		function (error){
 			res.json({status: error.toString()});
