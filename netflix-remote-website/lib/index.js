@@ -136,9 +136,23 @@ function playlists(userID){
 	return promise;
 }
 
+function get_playlist(userID, playID){
+	var promise = new Promise ( function (resolve, reject){
+		db.getPlaylistInfo(userID, playID).then (
+			function (result){
+				resolve(result);
+			},
+			function (error){
+				reject(error);
+			});
+		});
+	return promise;
+}
+
 exports.new_user 	 = new_user; 
 exports.new_playlist = new_playlist;
 exports.check 		 = check;
 exports.movies 		 = movies;
 exports.put_movies	 = put_movies;
 exports.playlists 	 = playlists;
+exports.get_playlist = get_playlist;

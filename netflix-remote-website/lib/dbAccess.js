@@ -304,9 +304,6 @@ var db = {
 					reject(datbaseConnectionError + getPlaylistsError)
 				}
 				else{
-					var p = "P";
-					var z = "Z";
-					var u = "U";
 					var sq = squel.select()
 									.from('playlists P')
 									.from('userplaylists Z')
@@ -330,7 +327,53 @@ var db = {
 			})
 			});
 		return promise;
+	},
+
+	getPlaylistInfo: function (uID, playID){
+		var getPlaylistInfoError = " while getting a playlists information";
+		var promise = new Promise( function (resolve, reject){
+			pg.connect(conString, function (connErr, client, done){
+				if (connErr){
+					reject(datbaseConnectionError + getPlaylistInfoError);
+				}
+				else{
+					var sq = squel.select()
+									.from('users U')
+									.from('userplaylists J')
+									.from('movies M')
+									.from('playlistsnode Z')
+									.from('nodes N')
+									.from('playlists P')
+									.field('M.name', "movie name")
+									.field("P.name", "Playlist Name")
+									.field('M.movielink')
+									.field('Z.position')
+									.where('U.uid = ?', uID)
+									.where('P.playid = ?', playID)
+									.where('P.playid = Z.playid')
+									.where('M.nodeid = Z.nodeid')
+									.where('N.nodeid = Z.nodeid')
+									.where('U.uid = J.uid')
+									.where('J.playid = P.playid')
+									.order("P.name")
+									.order("Z.position").toString();
+					client.query(sq, function (dbErr, result){
+						if(dbErr){
+							console.log(dbErr);
+							reject(databaseInteractionError + getPlaylistInfoError);
+						}
+						else{
+							done();
+							resolve(result.rows);
+						}
+					});
+				}
+			});
+		});
+		return promise;
 	}
+//select U.username, P.name as "Playlist Name", M.name as "Movie Name", M.movielink as Link, Z.position from users U, userplaylists J, movies M, playlistsNode Z, nodes N, playlists P 
+//where P.playid = Z.playid and M.nodeid = Z.nodeid and N.nodeid = Z.nodeid and U.uid = J.uid and J.playid = P.playid and U.uid = 2 order by P.name, Z.position;
 
 }
 

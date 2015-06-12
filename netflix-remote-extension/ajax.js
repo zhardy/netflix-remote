@@ -37,9 +37,6 @@ function build_playlists(playlistArray, container){
 	});
 	html = html + "</ul>";
 	container.append(html);
-	$('playlist').forEach( function (entry){
-		console.log(entry.toString());
-	})
-
+	$('playlist').on('click', get_playlist_info())
 }
 
