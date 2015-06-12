@@ -9,11 +9,11 @@
     <ul>
 
     	<% playlists.forEach( function (entry){ %>
-    		<li><%= entry.name %></li>
+    		<li id = <%=entry.playid %> > <%= entry.name %></li>
     		<% }); %>
     </ul>
   <% } else { %> 
-      <p>You don't have any playlists! :( Create one by clicking the link below! </p>
+      <p>You don\'t have any playlists! :( Create one by clicking the link below! </p>
   <% } %>
     <a href="/playlist/new">Create a new playlist! </a>
   </body>

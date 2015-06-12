@@ -23,7 +23,7 @@ function login(){
 			else{
 				var container = $('#container');
 				container.empty();
-				build_playlists(data.playlists, container)
+				build_playlists(data.playlists, container);
 			}
 
 		});
@@ -33,9 +33,13 @@ function login(){
 function build_playlists(playlistArray, container){
 	var html = "<ul>";
 	playlistArray.forEach(function (entry){
-		html = html + "<li>" + entry.name + "</li>";
+		html = html + "<li class = 'playlist' id="  +entry.playid + ">" + entry.name + "</li>";
 	});
 	html = html + "</ul>";
 	container.append(html);
+	$('playlist').forEach( function (entry){
+		console.log(entry.toString());
+	})
+
 }
 
