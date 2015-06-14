@@ -3,38 +3,18 @@ var router = express.Router();
 var db = require('../lib/index.js');
 
 router.get('/', function (req, res){
-	user = req.session.user;
 	if (user){
 		var playlists = db.playlists(user.uid);
 		playlists.then( function (data){
 			
-			res.render('playlists', {playlists : data});
+			res.send({playlists : data});
 		},
 		function (reject){
-			res.redirect('error', {message : reject});
+			res.send({message : reject});
 		});
-	}
-	else{
-		res.redirect('/login');
 	}
 });
 
-router.get('/new', function (req, res){
-	user = req.session.user;
-	if(user){
-		var movies = db.movies();
-		movies.then( function (data){
-
-			res.render('new_playlist', { movies : data });
-		},
-		function (reject){
-			res.redirect('error', {message : reject});
-		});
-	}
-  	else{
-  		res.redirect('/login');
-  	}
-});
 
 router.post('/new', function (req, res){
 	var user = req.session.user;

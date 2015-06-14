@@ -7,12 +7,23 @@
   <body>
     <h1><%= title %></h1>
     <p>Welcome to <%= title %></p>
-    <ul>
-    	<% movies.forEach( function (entry){ %>
-    		<li><%= entry.name %></li>
-    		<% }); %>
-    </ul>
-    <a href="/playlist">View your playlists! </a> <br>
-    <a href="/playlist/new">Or make a new one! </a>
+
+    View your playlists! <br> <br> <br>
+   
+    <div class="playlists">
+    </div>
+
+
+     Or make a new one! <br> <br> <br>
+
+   <input type="text" name="name"><br>
+      <div id="checker">
+      <% movies.forEach( function (entry){ %>
+        <input type="checkbox" class= "nodes" value= <%=entry.nodeid %> > <%= entry.name %><br>
+      <% }); %>
+    </div>
+      <button type ="button" onclick="new_playlist()">Submit</button>
+        <script type="text/javascript" src="/javascripts/ajax.js"></script>
+        <script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
   </body>
 </html>
