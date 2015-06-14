@@ -3,6 +3,7 @@ var router = express.Router();
 var db = require('../lib/index.js');
 
 router.get('/', function (req, res){
+	var user = req.session.user;
 	if (user){
 		var playlists = db.playlists(user.uid);
 		playlists.then( function (data){
@@ -10,11 +11,13 @@ router.get('/', function (req, res){
 			res.send({playlists : data});
 		},
 		function (reject){
-			res.send({message : reject});
+			res.send({error : reject});
 		});
 	}
+	else{
+		res.send({error: "You are not logged in!"});
+	}
 });
-
 
 router.post('/new', function (req, res){
 	var user = req.session.user;
@@ -25,7 +28,7 @@ router.post('/new', function (req, res){
 	}
 	var playlist = db.new_playlist(user.uid, name, nodes);
 	playlist.then( function (resolve){
-	 	console.log('good');
+	 	console.log(resolve);
 	 },
 	 function (error){
 	 	console.log(error);
