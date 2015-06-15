@@ -28,11 +28,11 @@ router.post('/new', function (req, res){
 	}
 	var playlist = db.new_playlist(user.uid, name, nodes);
 	playlist.then( function (resolve){
-	 	console.log(resolve);
+		res.sendStatus({playname : name, playid : resolve});
 	 },
-	 function (error){
-	 	console.log(error);
-	 });
+	 function (message){
+	 	res.sendStatus({error: message});
+	 	});
 });
 
 module.exports = router;

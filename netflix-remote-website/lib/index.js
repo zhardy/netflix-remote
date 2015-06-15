@@ -63,17 +63,16 @@ function new_playlist(userID, title, nodeIDs){
 		var play = db.makePlaylist(title);
 		play.then(
 			function (playID){
-
 				var connectUser = db.connectUserPlaylist(userID, playID);
 				connectUser.then(
 					function (result){
 						for(var i=0; i<nodeIDs.length; i++){
-							var connectPlay = db.connectPlaylistNodes(i, nodeIDs[i], playID, function (err, something){
+							var connectPlay = db.connectPlaylistNodes(i, nodeIDs[i], playID, function (err, result){
 								if(err){
 									reject(err);
 								}
 								else{
-									resolve(something);
+									resolve(playID);
 								}
 							});
 						}

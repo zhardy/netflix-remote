@@ -7,14 +7,14 @@ function new_playlist(){
      var nodes = [];
      $('#checker :checked').each(function() {
        nodes.push($(this).val());
+       $(this).attr('checked', false);
      });
 	var name = $("input[name='name'").val();
 	$.ajax({
 		type:'POST',
 		url : '/playlist/new',
 		data: { name : name, nodes : JSON.stringify(nodes)}
-	}).done( function (){
-		console.log('data');
+	}).done( function (data){
 		get_playlists();
 
 	});
@@ -27,6 +27,7 @@ function get_playlists(){
 		url: '/playlist',
 	}).done( function (data){
 		var container = $('.playlists');
+		container = container.empty();
 		var html = "<ul>";
 		data.playlists.forEach( function (entry){
 			html = html + "<li>" + entry.name + "</li>";

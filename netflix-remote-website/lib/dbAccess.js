@@ -262,7 +262,7 @@ var db = {
 						}
 					else{
 						done();
-						callback(undefined, true);
+						callback(result.rows.playid);
 					}
 				});
 			}
