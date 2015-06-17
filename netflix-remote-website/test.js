@@ -10,13 +10,14 @@
 // 									.returning('uid').toString();
 // console.log(sq);
 
-var db = require('./lib/index.js');
-
-db.get_playlist(1, 1).then(
-	function (result){
-		console.log(result);
-		process.exit();
-	},
-	function (error){
-		console.log(error);
-});
+						// <li>A Nightmare Before Christmas</li>
+						// <li>Practical Magic </li>
+						// <li>Hocus Pocus</li>
+						// <li>Halloween Town </li>
+						// <li>Nightmare on Elms Street</li>
+					
+						// <li>The Santa Clause</li>
+						// <li>Mircale on 31st Street</li>
+						// <li>Christmas Vacation</li>
+						// <li>Rudolph the Red Nosed Reindeer</li>
+						// <li>Santa\'s Coming to Town </li> 

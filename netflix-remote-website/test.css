@@ -1,0 +1,30 @@
+#user{
+	float:right;
+}
+
+.search{
+    margin-left: auto;
+    margin-right: auto;
+    width: 6%
+}
+
+.playlist {
+	float:left;
+}
+
+.channel{
+	padding:2%;
+	margin-bottom:1%;
+	width:10%;
+    border-radius: 25px;
+    border: 2px solid;
+    padding: 20px; 
+    
+}
+
+.channel-name{
+	color:red;
+	width:100%;
+
+    
+}
