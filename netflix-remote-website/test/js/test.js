@@ -5,7 +5,12 @@ $( document ).ready(function() {
 	    main.children().removeClass('selected');
 	    $(this).addClass('selected');
 	});
-	if($("#wrapper").hasClass("toggled")){
-		console.log('true');
-	}
+
+	    
+    $("#menu-toggle").click(function(event) {
+    	event.preventDefault();
+        $("#wrapper").toggleClass("toggled");
+        
+    });
+    
 });
