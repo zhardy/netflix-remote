@@ -12,5 +12,11 @@ $( document ).ready(function() {
         $("#wrapper").toggleClass("toggled");
         
     });
+
+    $("#add").click(function(event){
+    	event.preventDefault();
+    	$(this).before("<li class='playlist'><a href='#''>Test</a></li>");
+    	$(this).removeClass('selected');
+    });
     
 });

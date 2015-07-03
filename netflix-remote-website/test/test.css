@@ -103,7 +103,7 @@
 
 .glyphicon {
     font-size: 50px;
-    color:red;
+    color:black;
 }
 .selected {
         background: rgb(192,192,192);
@@ -113,6 +113,10 @@
 
 li.selected > a{
     color:black;
+}
+
+#add {
+    text-align: center;
 }
 
 @media(min-width:768px) {
