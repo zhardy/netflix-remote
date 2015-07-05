@@ -99,12 +99,15 @@
 #menu-toggle{
     height:500px;
     display:inline;
-}
-
-.glyphicon {
     font-size: 50px;
     color:black;
 }
+
+.edit-button {
+    /*display:inline;*/
+
+}
+
 .selected {
         background: rgb(192,192,192);
         text-decoration: none;

@@ -1,11 +1,7 @@
-var main = $('#main-nav');
+
    
 $( document ).ready(function() {
-	$('.playlist').click(function(event) {
-	    main.children().removeClass('selected');
-	    $(this).addClass('selected');
-	});
-
+    playlist_click();
 	    
     $("#menu-toggle").click(function(event) {
     	event.preventDefault();
@@ -17,6 +13,20 @@ $( document ).ready(function() {
     	event.preventDefault();
     	$(this).before("<li class='playlist'><a href='#''>Test</a></li>");
     	$(this).removeClass('selected');
+        playlist_click();
+    });
+
+    $(".edit-button").click(function(event){
+
     });
     
 });
+
+
+function playlist_click(){
+    $('.playlist').click(function(event) {
+        $('#main-nav').children().removeClass('selected');
+        $(this).addClass('selected');
+    });
+
+}
