@@ -5,10 +5,10 @@ var edit_button   = "<span class='glyphicon glyphicon-pencil edit-button'></span
 
    
 $( document ).ready(function() {
-    menu_toggle();
-    add_button();
     playlist_click();
-    edit();    
+    menu_toggle();
+    edit();
+    add_button();
 });
 
 function menu_toggle(){
@@ -21,9 +21,10 @@ function menu_toggle(){
 function add_button(){
     $("#add").click(function(event){
         event.preventDefault();
-        $(this).before("<li class='playlist'><a href='#''>Test</a></li>");
+        $(this).before("<li class='playlist'><a href='#''>Test" + edit_button + "</a></li>");
         $(this).removeClass('selected');
         playlist_click();
+        edit();
     });
 }
 

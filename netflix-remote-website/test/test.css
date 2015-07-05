@@ -97,10 +97,6 @@
 }
 
 #menu-toggle{
-    height:500px;
-    display:inline;
-    font-size: 50px;
-    color:black;
 }
 
 .playlist-title-input {
@@ -155,8 +151,5 @@ li.selected > a{
         margin-right: 0;
     }
 
-    #menu-toggle{
-        display:none;
-    }
 }
 
