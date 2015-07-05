@@ -17,7 +17,10 @@ $( document ).ready(function() {
     });
 
     $(".edit-button").click(function(event){
-
+        var title = $(this).parent().html();
+        $(this).parent().empty();
+        $(this).parent().append("<input type='text' class='playlist-title-input' value='"+ title + "'>");
+        
     });
     
 });
