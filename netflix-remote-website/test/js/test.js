@@ -17,9 +17,16 @@ $( document ).ready(function() {
     });
 
     $(".edit-button").click(function(event){
+        var item = $(this).parent();
         var title = $(this).parent().html();
-        $(this).parent().empty();
-        $(this).parent().append("<input type='text' class='playlist-title-input' value='"+ title + "'>");
+        title = title.split(" <sp"); 
+        title = title[0].trim();
+        item.empty();
+        item.append("<input class='playlist-title-input' type='text' value='"+ title +"'>");
+        text_input_select();
+        $('.playlist-title-input').focus();
+        // ?
+
         
     });
     
@@ -31,5 +38,10 @@ function playlist_click(){
         $('#main-nav').children().removeClass('selected');
         $(this).addClass('selected');
     });
+}
 
+function text_input_select(){
+    $('.playlist-title-input').focus(function() {
+        $(this).select();
+    });
 }
