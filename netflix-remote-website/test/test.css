@@ -108,6 +108,7 @@
     color: black;
     border: none;
     height: 30px;
+    width:60%;
     padding: 0 6px;
     line-height: 30px;
 }
@@ -125,6 +126,7 @@ li.selected > a{
 #add {
     text-align: center;
 }
+
 
 @media(min-width:768px) {
     #wrapper {
