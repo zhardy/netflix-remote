@@ -96,7 +96,8 @@
     background: none;
 }
 
-#menu-toggle{
+#menu-toggle-content{
+    display: block;
 }
 
 .playlist-title-input {
@@ -149,6 +150,10 @@ li.selected > a{
     #wrapper.toggled #page-content-wrapper {
         position: relative;
         margin-right: 0;
+    }
+
+    #menu-toggle-content {
+        display:none;
     }
 
 }

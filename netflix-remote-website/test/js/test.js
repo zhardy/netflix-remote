@@ -5,6 +5,7 @@ var edit_button   = "<span class='glyphicon glyphicon-pencil edit-button'></span
 
    
 $( document ).ready(function() {
+    // $('#menu-toggle-content').hide();
     playlist_click();
     menu_toggle();
     edit();
@@ -12,7 +13,14 @@ $( document ).ready(function() {
 });
 
 function menu_toggle(){
-    $("#menu-toggle").click(function(event) {
+
+    $(".menu-toggle").click(function(event) {
+        if($(this).attr('id') == 'menu-toggle-sidebar'){
+            $('#menu-toggle-content').show();
+        }
+        else{
+            $('#menu-toggle-content').hide();
+        }
         event.preventDefault();
         $("#wrapper").toggleClass("toggled");
     });
